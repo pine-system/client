@@ -1,0 +1,93 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/Language">
+        <ListPreference
+            app:defaultValue="中文"
+            app:entries="@array/language_entries"
+            app:entryValues="@array/language_values"
+            app:key="language"
+            app:title="语言"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/ServerSettings">
+        <EditTextPreference
+            app:defaultValue="@string/ServerPath"
+            app:key="ServerSettings"
+            app:title="@string/ServerSettings"
+            app:useSimpleSummaryProvider="true"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/WatchDogSettings">
+        <SwitchPreferenceCompat
+            app:key="watchdog"
+            app:defaultValue="false"
+            app:title="@string/watchdog_title" />
+        <EditTextPreference
+            app:key="power_switch_off"
+            app:defaultValue="09:10"
+            app:title="关机时间"
+            />
+        <EditTextPreference
+            app:key="power_switch_on"
+            app:defaultValue="14:00"
+            app:title="开机时间"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="电源设置">
+        <Preference
+            app:key="power_reboot"
+            app:summary="重启"
+            />
+        <Preference
+            app:key="power_off"
+            app:summary="关机"
+            />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="软件操作">
+        <Preference
+            app:key="install"
+            app:summary="静默安装"
+            />
+        <Preference
+            app:key="serial"
+            app:summary="芯片序列号"
+            />
+        <Preference
+            app:key="lcd_off"
+            app:summary="开关显示器，5秒后自动打开"
+            />
+        <ListPreference
+            app:defaultValue="东八区"
+            app:entries="@array/time_zone_entries"
+            app:entryValues="@array/time_zone_values"
+            app:key="time_zone"
+            app:title="修改时区"
+            app:useSimpleSummaryProvider="true" />
+        <Preference
+        app:key="screenshop"
+        app:summary="截图"
+        />
+    </PreferenceCategory>
+<!--
+    <PreferenceCategory app:title="@string/sync_header">
+
+        <EditTextPreference
+            app:key="signature"
+            app:title="@string/signature_title"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            app:key="sync"
+            app:title="@string/sync_title" />
+
+        <SwitchPreferenceCompat
+            app:dependency="sync"
+            app:key="attachment"
+            app:summaryOff="@string/attachment_summary_off"
+            app:summaryOn="@string/attachment_summary_on"
+            app:title="@string/attachment_title" />
+
+    </PreferenceCategory>
+-->
+</PreferenceScreen>

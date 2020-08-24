@@ -1,0 +1,195 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="language_entries">
+        <item>中文</item>
+        <item>English</item>
+    </string-array>
+
+    <string-array name="language_values">
+        <item>中文</item>
+        <item>Englist</item>
+    </string-array>
+
+    <string-array name="time_zone_entries">
+        <item>马朱罗</item>
+        <item>中途岛</item>
+        <item>檀香山</item>
+        <item>安克雷奇</item>
+        <item>洛杉矶/美国太平洋</item>
+        <item>提华纳/美国太平洋</item>
+        <item>凤凰城美国山区</item>
+        <item>奇瓦瓦</item>
+        <item>丹佛/美国山区</item>
+        <item>哥斯达黎加/美国中部</item>
+        <item>芝加哥/美国中部</item>
+        <item>墨西哥城/美国中部</item>
+        <item>里贾纳/美国中部</item>
+        <item>波哥大/哥伦比亚</item>
+        <item>纽约/美国东部</item>
+        <item>加拉加斯/委内瑞拉</item>
+        <item>巴巴多斯/大西洋</item>
+        <item>马瑙斯/亚马逊</item>
+        <item>圣地亚哥</item>
+        <item>圣约翰/纽芬兰</item>
+        <item>圣保罗</item>
+        <item>布宜诺斯艾利斯</item>
+        <item>戈特霍布</item>
+        <item>蒙得维的亚/乌拉圭</item>
+        <item>南乔治亚</item>
+        <item>亚述尔群岛</item>
+        <item>佛得角</item>
+        <item>卡萨布兰卡</item>
+        <item>伦敦/格林尼治</item>
+        <item>阿姆斯特丹/中欧</item>
+        <item>贝尔格莱德/中欧</item>
+        <item>布鲁塞尔/中欧</item>
+        <item>萨拉热窝/中欧</item>
+        <item>温得和克</item>
+        <item>布拉扎维/西部非洲</item>
+        <item>安曼/东欧</item>
+        <item>雅典/东欧</item>
+        <item>贝鲁特/东欧</item>
+        <item>开罗/东欧</item>
+        <item>赫尔辛基/东欧</item>
+        <item>耶路撒冷/以色列</item>
+        <item>明斯克</item>
+        <item>哈拉雷/中部非洲</item>
+        <item>巴格达</item>
+        <item>莫斯科</item>
+        <item>科威特</item>
+        <item>内罗毕/东部非洲</item>
+        <item>德黑兰/伊朗</item>
+        <item>巴库</item>
+        <item>第比利斯</item>
+        <item>埃里温</item>
+        <item>迪拜</item>
+        <item>喀布尔/阿富汗</item>
+        <item>卡拉奇</item>
+        <item>乌拉尔</item>
+        <item>叶卡捷林堡</item>
+        <item>加尔各答</item>
+        <item>科伦坡</item>
+        <item>加德满都/尼泊尔</item>
+        <item>阿拉木图</item>
+        <item>仰光/缅甸</item>
+        <item>克拉斯诺亚尔斯克</item>
+        <item>曼谷</item>
+        <item>北京/中国</item>
+        <item>香港/中国</item>
+        <item>伊尔库茨克</item>
+        <item>吉隆坡</item>
+        <item>佩思</item>
+        <item>台北时间 (台北)</item>
+        <item>首尔</item>
+        <item>东京/日本</item>
+        <item>雅库茨克</item>
+        <item>阿德莱德</item>
+        <item>达尔文</item>
+        <item>布里斯班</item>
+        <item>霍巴特</item>
+        <item>悉尼</item>
+        <item>符拉迪沃斯托克/海参崴</item>
+        <item>关岛</item>
+        <item>马加丹</item>
+        <item>奥克兰</item>
+        <item>斐济</item>
+        <item>东加塔布</item>
+
+
+
+
+
+
+
+
+
+
+
+
+    </string-array>
+    <string-array name="time_zone_values">
+        <item>Pacific/Majuro</item>
+        <item>Pacific/Midway</item>
+        <item>Pacific/Honolulu</item>
+        <item>America/Anchorage</item>
+        <item>America/Los_Angeles</item>
+        <item>America/Tijuana</item>
+        <item>America/Phoenix</item>
+        <item>America/Chihuahua</item>
+        <item>America/Denver</item>
+        <item>America/Costa_Rica</item>
+        <item>America/Chicago</item>
+        <item>America/Mexico_City</item>
+        <item>America/Regina</item>
+        <item>America/Bogota</item>
+        <item>America/New_York</item>
+        <item>America/Caracas</item>
+        <item>America/Barbados</item>
+        <item>America/Manaus</item>
+        <item>America/Santiago</item>
+        <item>America/St_Johns</item>
+        <item>America/Sao_Paulo</item>
+        <item>America/Argentina/Buenos_Aires</item>
+        <item>America/Godthab</item>
+        <item>America/Montevideo</item>
+        <item>Atlantic/South_Georgia</item>
+        <item>Atlantic/Azores</item>
+        <item>Atlantic/Cape_Verde</item>
+        <item>Africa/Casablanca</item>
+        <item>Europe/London</item>
+        <item>Europe/Amsterdam</item>
+        <item>Europe/Belgrade</item>
+        <item>Europe/Brussels</item>
+        <item>Europe/Sarajevo</item>
+        <item>Africa/Windhoek</item>
+        <item>Africa/Brazzaville</item>
+        <item>Asia/Amman</item>
+        <item>Europe/Athens</item>
+        <item>Asia/Beirut</item>
+        <item>Africa/Cairo</item>
+        <item>Europe/Helsinki</item>
+        <item>Asia/Jerusalem</item>
+        <item>Europe/Minsk</item>
+        <item>Africa/Harare</item>
+        <item>Asia/Baghdad</item>
+        <item>Europe/Moscow</item>
+        <item>Asia/Kuwait</item>
+        <item>Africa/Nairobi</item>
+        <item>Asia/Tehran</item>
+        <item>Asia/Baku</item>
+        <item>Asia/Tbilisi</item>
+        <item>Asia/Yerevan</item>
+        <item>Asia/Dubai</item>
+        <item>Asia/Kabul</item>
+        <item>Asia/Karachi</item>
+        <item>Asia/Oral</item>
+        <item>Asia/Yekaterinburg</item>
+        <item>Asia/Calcutta</item>
+        <item>Asia/Colombo</item>
+        <item>Asia/Katmandu</item>
+        <item>Asia/Almaty</item>
+        <item>Asia/Rangoon</item>
+        <item>Asia/Krasnoyarsk</item>
+        <item>Asia/Bangkok</item>
+        <item>Asia/Shanghai</item>
+        <item>Asia/Hong_Kong</item>
+        <item>Asia/Irkutsk</item>
+        <item>Asia/Kuala_Lumpur</item>
+        <item>Australia/Perth</item>
+        <item>Asia/Taipei</item>
+        <item>Asia/Seoul</item>
+        <item>Asia/Tokyo</item>
+        <item>Asia/Yakutsk</item>
+        <item>Australia/Adelaide</item>
+        <item>Australia/Darwin</item>
+        <item>Australia/Brisbane</item>
+        <item>Australia/Hobart</item>
+        <item>Australia/Sydney</item>
+        <item>Asia/Vladivostok</item>
+        <item>Pacific/Guam</item>
+        <item>Asia/Magadan</item>
+        <item>Pacific/Auckland</item>
+        <item>Pacific/Fiji</item>
+        <item>Pacific/Tongatapu</item>
+    </string-array>
+</resources>

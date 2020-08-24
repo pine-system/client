@@ -1,0 +1,7 @@
+include ':SystemAPI'
+include ':Config'
+include ':Hardware'
+include ':CustomUI'
+include ':HttpUtil'
+include ':app'
+rootProject.name = "pine"

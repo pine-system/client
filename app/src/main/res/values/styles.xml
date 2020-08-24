@@ -1,0 +1,26 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#ff000000</item>
+        <item name="colorPrimaryDark">#ff000000</item>
+        <item name="colorAccent">#ff000000</item>
+    </style>
+    <style name="MyCheckBox">
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorPrimaryDark</item>
+    </style>
+    <style name="SplashTheme">
+
+        <item name="android:windowFullscreen">true</item>
+
+        <item name="windowNoTitle">true</item>
+
+        <item name="windowActionBar">false</item>
+
+        <item name="android:windowIsTranslucent">false</item>
+
+        <item name="android:windowDisablePreview">false</item>
+
+    </style>
+</resources>
