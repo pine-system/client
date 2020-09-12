@@ -125,9 +125,9 @@ public class MainActivity extends AppCompatActivity implements UpdateResource.Up
         super.onResume();
         if(isPermission){
             //1.创建UpdateResource的单例。
-            mUpdateResource = UpdateResource.makeUpdateResource(this,mKey);
-            mUpdateResource.setOnUpdateResourceLinstener(this);
-            mKey.notify();
+         //   mUpdateResource = UpdateResource.makeUpdateResource(this,mKey);
+         //   mUpdateResource.setOnUpdateResourceLinstener(this);
+           // mKey.notify();
             //a)创建sdcard中的资源文件路径
             //b)实现资源拷贝
             //c)获取资源

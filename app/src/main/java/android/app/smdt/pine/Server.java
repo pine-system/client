@@ -1,6 +1,7 @@
 package android.app.smdt.pine;
 
 import android.app.AlarmManager;
+import android.app.smdt.systemapi.SystemAPI;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
@@ -16,6 +17,16 @@ import java.io.InputStream;
 import java.util.Calendar;
 
 public class Server  {
+    public static final int COMMAND_FLAG_REBOOT = 0x00000004;
+    public static final int COMMAND_FLAG_SET_SYSTEM_TIME = 0x00000008;
+    public static final int COMMAND_FLAG_SET_POWERONOFF = 0x00000010;
+    public static final int COMMAND_FLAG_SET_VOLUME = 0x00000002;
+    public static final int COMMAND_FLAG_SCREENSHOT = 0x00000014;
+    public static final int COMMAND_FLAG_DOWNLOAD_RESOURCE = 0x00000018;
+    public static final int COMMAND_FLAG_DOWNLOAD_FIRMWARE = 0x00000020;
+    public static final int COMMAND_FLAG_UPGRADE_APK = 0x00000022;
+    public static final int COMMAND_FLAG_UPDATE_VOLUME = 0x00000024;
+
     /*******************************************远程命令响应方法****************************************/
     public static  void reboot(Context context){
         PowerManager mPM  = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
@@ -27,23 +38,19 @@ public class Server  {
             return;
         }
         AlarmManager mAM = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        try {
-            JSONObject json = new JSONObject(jsonStr);
+        String[] time = jsonStr.split("-");
+        if(time != null) {
             Calendar c = Calendar.getInstance();
             c.clear();
-            c.set(Calendar.YEAR,json.getInt("year"));
-            c.set(Calendar.MONTH,json.getInt("month") -1);
-            c.set(Calendar.DAY_OF_MONTH,json.getInt("day"));
-            c.set(Calendar.HOUR_OF_DAY,json.getInt("hour"));
-            c.set(Calendar.MINUTE,json.getInt("minute"));
-            c.set(Calendar.SECOND,json.getInt("second"));
-            Log.e("sv","get the time:" + json.getInt("second")+".." + json.toString());
+            c.set(Calendar.YEAR, Integer.parseInt(time[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(time[1]) - 1);
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(time[2]));
+            c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[3]));
+            c.set(Calendar.MINUTE, Integer.parseInt(time[4]));
+            c.set(Calendar.SECOND, Integer.parseInt(time[5]));
+           // Log.e("sv", "get the time:" + Integer.parseInt(time[0]) + ".." + Integer.parseInt(time[0]));
             long when = c.getTimeInMillis();
-            //   mAM.setTime(when);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }finally {
-            //mHeartBeatTimer.schedule(mHeartBeatTimeTask,0,HTTP_BEATHART_PEROID);
+            mAM.setTime(when);
         }
 
     }
@@ -54,30 +61,42 @@ public class Server  {
         if(jsonStr == null || jsonStr.equals("")){
             return;
         }
-        try {
-            Intent mIntent = new Intent("android.intent.action.setpoweronoff");
-            JSONObject json = new JSONObject(jsonStr);
-            JSONObject powerOff = json.getJSONObject("powerOff");
-            timeOffArray[0] = powerOff.getInt("year");
-            timeOffArray[1] = powerOff.getInt("month");
-            timeOffArray[2] = powerOff.getInt("day");
-            timeOffArray[3] = powerOff.getInt("hour");
-            timeOffArray[4] = powerOff.getInt("min");
-            mIntent.putExtra("timeOff",timeOffArray);
-            JSONObject  powerOn = json.getJSONObject("powerOn");
-            timeOnArray[0] = powerOn.getInt("year");
-            timeOnArray[1] = powerOn.getInt("month");
-            timeOnArray[2] = powerOn.getInt("day");
-            timeOnArray[3] = powerOn.getInt("hour");
-            timeOnArray[4] = powerOn.getInt("min");
-            mIntent.putExtra("timeOn",timeOnArray);
-            boolean enable = json.getBoolean("enable");
-            context.sendBroadcast(mIntent);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }finally {
-            //mHeartBeatTimer.schedule(mHeartBeatTimeTask,0,HTTP_BEATHART_PEROID);
+        String[] factors = jsonStr.split(" ");
+        //1.关机解析
+        String[] time = factors[0].split("-");
+        for(int index = 0; index < time.length; index ++){
+            timeOffArray[index] = Integer.parseInt(time[index]);
+            Log.e("Network","[" + index+"]:" + timeOffArray[index]);
         }
+        time = factors[1].split("-");
+        for(int index = 0; index < time.length; index ++){
+            timeOnArray[index] = Integer.parseInt(time[index]);
+            Log.e("Network","[" + index+"]:" + timeOnArray[index]);
+        }
+            Log.e("Network","set power off");
+            Intent mIntent = new Intent("android.intent.action.setpoweronoff");
+            mIntent.putExtra("timeoff",timeOffArray);
+            mIntent.putExtra("timeon",timeOnArray);
+            boolean enable = true;
+            mIntent.putExtra("enable",enable);
+            context.sendBroadcast(mIntent);
+
+    }
+    public static void ScreenCap(Context context){
+        SystemAPI api = SystemAPI.create(context);
+        api.screenShot("/sdcard/Nvtek/screenCap","0.1.png",context);
+    }
+    public static void SetVolume(Context context,String parameter){
+
+    }
+    public static void DownloadResource(Context context){
+
+    }
+    public static void DownloadFirmware(Context context){
+
+    }
+    public static void downloadApk(Context context){
+
     }
     public static void downLoad(InputStream ins){
         try {

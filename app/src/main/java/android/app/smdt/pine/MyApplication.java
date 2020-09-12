@@ -1,26 +1,20 @@
 package android.app.smdt.pine;
 
 import android.app.Application;
-import android.app.smdt.config.DeviceInfo;
-import android.app.smdt.config.SystemConfig;
 import android.content.res.Configuration;
-import android.os.Debug;
-import android.util.DisplayMetrics;
 
 import androidx.annotation.NonNull;
-
-import org.json.JSONObject;
 
 public class MyApplication extends Application {
     private static final String TAG = MyApplication.class.getSimpleName();
     private static final boolean DebugEnabled = true;
-    private DeviceInfo mDeviceInfo;
+   // private DeviceInfo mDeviceInfo;
 
     @Override
     public void onCreate() {
         super.onCreate();
         //1.查看本机授权状态
-        mDeviceInfo = DeviceInfo.getInstance(this);
+       // mDeviceInfo = DeviceInfo.getInstance(this);
     }
 
     @Override
@@ -37,7 +31,7 @@ public class MyApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
     }
-
+/*
     public DeviceInfo  getDeviceInfo(){
         return mDeviceInfo;
     }
@@ -53,4 +47,6 @@ public class MyApplication extends Application {
     public String networkType(){
         return mDeviceInfo.networkType();
     }
+
+ */
 }
