@@ -4,54 +4,36 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.smdt.config.SystemConfig;
-import android.app.smdt.customui.CustomLayout;
-import android.app.smdt.customui.CustomMultiLayout;
-import android.app.smdt.customui.CustomViewGroup;
-import android.app.smdt.customui.text.Title;
-import android.app.smdt.pine.resource.Network;
-import android.app.smdt.pine.resource.UpdateResource;
+import android.app.smdt.customui.BaseLayout;
+import android.app.smdt.customui.SubLayout;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
+import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.view.Display;
 import android.view.Window;
-import android.widget.Toast;
 
-import java.io.File;
-import java.text.DecimalFormat;
-import java.util.LinkedList;
+import org.json.JSONObject;
 
 
-public class MainActivity extends AppCompatActivity implements UpdateResource.UpdateResourceIntoSDCardCallback,SDCard.progressBarCallback{
-    private static final int LAYOUT_MODE_INDEX = 0;
+public class MainActivity extends AppCompatActivity {
     //1.常量
     private static final String TAG  = "main";
     private static final boolean DebugEnabled = true;
     private static final int REQUEST_PERMISSION_CODE =  1000;
+    private static final int DISPLAY_DEVICE_MAX_NUM = 2;
+    private static final boolean VICE_SCREEN_DISPLAY_ENABLE = true;
     //2.变量定义getInstance
-    CustomLayout mainLayout;
-    private Title mTitle;
-    private Title.CustomText mLogTitle;
-    private Title.CustomText mSdTitle;
-    private Title.CustomText mMainTitle;//标题显示
-    private Title.CustomText mTimeTitle;//时间显示
-    private Title.CustomText mSubTitle;//底部的跑马灯显示
+    private BaseLayout mBaseLayout;
     private boolean isPermission;
-    private SDCard sdcard;
-    private Network network;
-
-
-    private LinkedList<File>mVideoList;
-    private LinkedList<File>mImageList;
-    private LinkedList<File>mLogoList;
-    private LinkedList<File>mSubtitleList;
-    private LinkedList<File>mLayoutList;
-    private CustomViewGroup mCustomViewGroup;
-    private CustomMultiLayout multiLayout;
-    private Handler mHandler;
+    private SubLayout mainLayout;
+    private SubLayout viceLayout;
+    private ViceScreenDisplay mViceScreenDisplay;
     private Context context;
     private String[] permissions= {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -60,101 +42,99 @@ public class MainActivity extends AppCompatActivity implements UpdateResource.Up
             Manifest.permission.CAMERA,
             Manifest.permission.SYSTEM_ALERT_WINDOW
     };
-    private UpdateResource mUpdateResource;
-    private Object mKey;
-    //双屏异显
-    private ViceScreenDisplay mViceDisplay;
+    private MyApplication mApp;
+    private ResourceFileManager mRFM;
+
+    private boolean viceScreenDisplayEnabled(){
+        DisplayManager mDM = (DisplayManager)getSystemService(Context.DISPLAY_SERVICE);
+        Display[] mDisplays = mDM.getDisplays();
+        if(mDisplays.length ==  DISPLAY_DEVICE_MAX_NUM && VICE_SCREEN_DISPLAY_ENABLE){
+            return true;
+        }else{
+            return false;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //1.创建自定义的桌面
          requestWindowFeature(Window.FEATURE_NO_TITLE);
-         mainLayout = new CustomLayout(this);
+         mBaseLayout = new BaseLayout(this);
          setContentView(mainLayout);
         //2.将该桌面设置为全屏
          SystemConfig.fullScreen(this);
         //3.将该桌面请求为竖屏
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //4.获取显示title
-        mTitle = Title.makeTitleInstance();
-        //5.获取系统权限
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        //4.获取系统权限
         isPermission = SystemConfig.RequestPermission(this,permissions,REQUEST_PERMISSION_CODE);
-        //6.处理主线程中的UI
-        context = this;
-        mKey = new Object();
-        mHandler = new Handler(getMainLooper()){
-          @Override
-          public void handleMessage(Message msg){
-              switch(msg.what){
-                  case 0: //auto play stop
-                      SystemConfig.D(TAG,DebugEnabled,"sd card update.");
-                      if(multiLayout != null){
-                          multiLayout.onDestroy();
-                          mainLayout.RemoveSubViewIntoCustomLayout(multiLayout);
-                          multiLayout = null;
-
-                      }
-                      if(mViceDisplay != null){
-                          mViceDisplay.onDestroy();
-                          mViceDisplay = null;
-                      }
-                      break;
-                  case 1:// auto play start
-                      RefreshResourceList();
-                      multiLayout = new CustomMultiLayout(context,mainLayout,mLayoutList.get(LAYOUT_MODE_INDEX),mLogTitle);
-                      autoViceScreenPlay();
-                      break;
-              }
-          }
-        };
+        //5.处理主线程中的UI
+        mApp = (MyApplication)getApplication();
+        mRFM = mApp.getResourceFileManager();
+        this.context = this;
     }
-/*
-    @Override
-    public void onBackPressed() {
-        CustomDialog exitDialog = new CustomDialog(this,"是否退出系统","请确认一下");
-    }
-*/
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        SystemConfig.D(TAG,DebugEnabled,"orient:" + newConfig,"rotate:" + this.getWindowManager().getDefaultDisplay().getRotation());
+    private void startPlay(){
+        JSONObject mainScreenLayout =  mRFM.getScreenLayout(ResourceFileManager.MAIN_SCREEN_LAYOUT_INDEX);
+        if(null != mainScreenLayout){
+            if(null == mainLayout){
+                mainLayout = new SubLayout(this, mainScreenLayout,0,getDrawable(R.drawable.no_resource));
+                mBaseLayout.InsertSubViewIntoCustomLayout(mainLayout);
+            }
+        }
     }
 
+    private void startViceScreenPlay(){
+        JSONObject viceScreenLayout =  mRFM.getScreenLayout(ResourceFileManager.VICE_SCREEN_LAYOUT_INDEX);
+        if(null != viceScreenLayout){
+            if(null == viceLayout){
+                viceLayout = new SubLayout(this,viceScreenLayout,1,getDrawable(R.drawable.no_resource));
+                mViceScreenDisplay = new ViceScreenDisplay(this,ViceScreenDisplay.VICE_SCREEN_INDEX,viceLayout);
+            }
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
         if(isPermission){
-            //1.创建UpdateResource的单例。
-         //   mUpdateResource = UpdateResource.makeUpdateResource(this,mKey);
-         //   mUpdateResource.setOnUpdateResourceLinstener(this);
-           // mKey.notify();
-            //a)创建sdcard中的资源文件路径
-            //b)实现资源拷贝
-            //c)获取资源
-            //d)退出
-            //mLogTitle = mTitle.insertCustomText(this,mainLayout,"",mTitle.MAIN_TITLE);
-           // sdcard = SDCard.getInstance(this,this);
-            //4.检测网络
-           // network = Network.getInstance(this,this,mLogTitle);
-            //5.开始播放
-           // RefreshResourceList();
-            //autoPlay();
-            //6.启动双屏
-          //  autoViceScreenPlay();
+            //1.根据ResourceFileManager 管理layout
+            startPlay();
+            //2.启动双屏显示
+            if(viceScreenDisplayEnabled()){
+                startViceScreenPlay();
+            }
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        String title = getPackageName() + " " + getResources().getString(R.string.confirm);
+        AlertDialog.Builder  mBuilder = new AlertDialog.Builder(this);
+        mBuilder.setTitle(title);
+        mBuilder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                ((Activity)context).finish();
+            }
+        });
+        mBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+        mDialog.setCanceledOnTouchOutside(true);
+    }
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(multiLayout != null) {
-            multiLayout.onDestroy();
+        mBaseLayout.removeAllViews();
+        if(mainLayout != null){
+            mainLayout.onDestroy();
         }
-        if(mViceDisplay != null) {
-            mViceDisplay.onDestroy();
+        if(viceLayout != null){
+            viceLayout.onDestroy();
         }
-        mainLayout.removeAllViews();
-        sdcard.onDestroy();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -166,67 +146,5 @@ public class MainActivity extends AppCompatActivity implements UpdateResource.Up
                 //未授权
             }
         }
-    }
-    private float count = 0f;
-    @Override
-    public void setProgressBarValue(File file, long max, int cur) {
-        count +=  cur;
-        float ratio  =  count / max;
-        DecimalFormat format = new DecimalFormat("#.00");
-        String scale = format.format(ratio);
-        String reslut = Float.parseFloat(scale) * 100 + "%";
-        SystemConfig.D("SDCard",DebugEnabled,file.getAbsolutePath() + "ratio:" + reslut);
-        mLogTitle.updateTitle(file.getName() + "   ratio:" + reslut );
-    }
-
-    @Override
-    public void updateResourceCompleted() {
-        mLogTitle.updateTitle("拷贝完成");
-        mHandler.sendEmptyMessage(1);
-    }
-
-    @Override
-    public void autoPlayStop() {
-       mHandler.sendEmptyMessage(0);//当插入sd u盘，停止自动播放
-    }
-
-
-
-    private void RefreshResourceList(){
-        mVideoList = sdcard.getVideoList();
-        mImageList = sdcard.getImageList();
-        mLogoList = sdcard.getmLogoList();
-        mSubtitleList = sdcard.getmSubtitleList();
-        mLayoutList = sdcard.getmLayoutList();
-    }
-
-    private void autoPlay(){
-        if(multiLayout == null && !mLayoutList.isEmpty()) {
-            SystemConfig.D(TAG,DebugEnabled,"start to play");
-            Toast.makeText(this,"start to play",Toast.LENGTH_LONG).show();
-            multiLayout = new CustomMultiLayout(this, mainLayout, mLayoutList.get(LAYOUT_MODE_INDEX),mLogTitle);
-        }
-    }
-    private void autoViceScreenPlay(){
-        if(mViceDisplay == null && !mVideoList.isEmpty()) {
-            mViceDisplay = new ViceScreenDisplay(getApplicationContext(), mVideoList,mImageList);
-            multiLayout.setPlayerListener(mViceDisplay);
-        }
-    }
-
-
-    @Override
-    public void updateResourceSDcardRatio(String fileName, String ratio) {
-
-    }
-
-    @Override
-    public void updateResourceSDcardCompleted() {
-
-    }
-
-    @Override
-    public void stopPlay() {
-
     }
 }

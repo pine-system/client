@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorPrimaryDark"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#ff000000"
-    tools:context=".MainActivity"
-    tools:ignore="MissingDefaultResource">
-
+    android:layout_height="match_parent">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/nvtek"
-        android:id="@+id/welcome_logo"
-        />
-
-    <!--左上密码图标-->
+        android:id="@+id/welcome_logo"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -23,20 +16,15 @@
         android:scaleType="fitStart"
         android:maxWidth="64px"
         android:maxHeight="64px"
-        android:id="@+id/open_passwd_win"
-        android:visibility="invisible"
-        />
-
-
-    <!--中间-->
+        android:id="@+id/navi_page"
+        android:visibility="invisible"/>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="400dp"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:visibility="invisible"
-        android:id="@+id/device_intro"
-        >
+        android:id="@+id/device_intro">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,91 +46,7 @@
             android:textColor="#ffffffff"
             android:textSize="24dp"
             android:text="device info"
-            android:id="@+id/device_info"
-            />
-        </LinearLayout>
-
-    <GridLayout
-        android:layout_margin="20dp"
-        android:padding="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/passwd_win"
-        android:visibility="invisible"
-        android:orientation="horizontal"
-        android:rowCount="4"
-        android:columnCount="4"
-        android:layout_gravity="bottom|center"
-        >
-        <EditText
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="4"
-            android:inputType="textPassword"
-            android:background="@color/colorPrimary"
-            android:id="@+id/passwd_value"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="4"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="5"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="6"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Enter"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="7"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="9"
-            />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            />
-    </GridLayout>
-
+            android:id="@+id/device_info" />
+    </LinearLayout>
 </FrameLayout>
+

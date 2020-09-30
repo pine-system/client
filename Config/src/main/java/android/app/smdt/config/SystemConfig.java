@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.util.Calendar;
 import java.util.Enumeration;
 
 import static java.net.NetworkInterface.getNetworkInterfaces;
@@ -44,6 +45,22 @@ public class SystemConfig {
         sb.append(tag + "info end.");
         sb.append("\n");
         Log.e(tag,sb.toString());
+    }
+
+    public static long getDateSystemTime(String date){
+        if(date == null){
+            return 0;
+        }
+        String[] tmp = date.split("-");
+        if(null == tmp){
+            return 0;
+        }
+        Calendar c = Calendar.getInstance();
+        c.clear();
+        c.set(Calendar.YEAR,Integer.parseInt(tmp[0]));
+        c.set(Calendar.MONTH,Integer.parseInt(tmp[1]) -1);
+        c.set(Calendar.DAY_OF_MONTH,Integer.parseInt(tmp[2]));
+        return c.getTimeInMillis();
     }
 
     public static DisplayMetrics getDisplayMetricsById(Context context, int id) {

@@ -1,20 +1,38 @@
 package android.app.smdt.pine;
 
 import android.app.Application;
+import android.app.smdt.pine.Http.Download;
+import android.app.smdt.pine.Http.Heartbeat;
+import android.app.smdt.pine.Http.HttpImp;
+import android.app.smdt.pine.Http.Login;
+import android.app.smdt.pine.Http.Upload;
+import android.app.smdt.pine.device.Device;
+import android.app.smdt.pine.resource.Asset;
+import android.app.smdt.pine.resource.SDCard;
 import android.content.res.Configuration;
 
 import androidx.annotation.NonNull;
 
 public class MyApplication extends Application {
-    private static final String TAG = MyApplication.class.getSimpleName();
-    private static final boolean DebugEnabled = true;
-   // private DeviceInfo mDeviceInfo;
-
+    private Device mDevice;
+    private Login mLogin;
+    private Heartbeat mHeartbeat;
+    private Download mDownload;
+    private Upload mUpload;
+    private ResourceFileManager mRFM;
+    private Asset mAsset;
+    private SDCard mSD;
     @Override
     public void onCreate() {
         super.onCreate();
-        //1.查看本机授权状态
-       // mDeviceInfo = DeviceInfo.getInstance(this);
+        mDevice = new Device(this);
+        mLogin = new Login(mDevice);
+        mHeartbeat = new Heartbeat(this,mDevice);
+        mDownload = new Download(mDevice);
+        mUpload = new Upload(mDevice);
+        mAsset = new Asset(this,mDevice);
+        mSD = new SDCard(this,mDevice);
+        mRFM = new ResourceFileManager(this,mLogin,mHeartbeat,mDownload,mUpload,mAsset,mSD,mDevice);
     }
 
     @Override
@@ -31,22 +49,18 @@ public class MyApplication extends Application {
     public void onLowMemory() {
         super.onLowMemory();
     }
-/*
-    public DeviceInfo  getDeviceInfo(){
-        return mDeviceInfo;
+
+    public Device getDevice(){
+        return mDevice;
     }
-    public DisplayMetrics getDisplayMetrics(){
-        return SystemConfig.getDisplayMetricsById(this,0);
+    public Login getLogin(){
+        return mLogin;
     }
-    public boolean isAuthorized(){
-        return mDeviceInfo.isAuthorized();
+    public Heartbeat getHeartbeat(){
+        return mHeartbeat;
     }
-    public boolean isConnected(){
-        return mDeviceInfo.isNetworkConnected();
-    }
-    public String networkType(){
-        return mDeviceInfo.networkType();
+    public ResourceFileManager getResourceFileManager(){
+        return mRFM;
     }
 
- */
 }

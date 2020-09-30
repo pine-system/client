@@ -26,21 +26,24 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings">
         </activity>
+        <activity
+            android:screenOrientation="unspecified"
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+           >
+
+        </activity>
         <activity android:name=".GuiderActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="unspecified"
-
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:screenOrientation="unspecified"
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-           >
+        <activity android:name=".TestActivity">
+
         </activity>
     </application>
 
